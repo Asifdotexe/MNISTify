@@ -17,7 +17,10 @@ def main():
     )
 
     # Load the trained model
-    model = load_trained_model(r"..\saved_model\mnist_digit_recognizer.keras")
+    try:
+        model = load_trained_model(r"..\saved_model\mnist_digit_recognizer.keras")
+    except ValueError:
+        model = load_trained_model("/home/adminuser/mnistify/saved_model/mnist_digit_recognizer.keras")
 
     # File uploader to upload an image
     uploaded_file = st.file_uploader("Upload your image", type=["png", "jpg", "jpeg"])
