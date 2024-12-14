@@ -6,6 +6,7 @@ seaborn==0.13.2
 matplotlib==3.9.2
 streamlit==1.40.2
 tensorflow==2.18.0
+opencv-python
 opencv-contrib-python==4.10.0.84
 streamlit-drawable-canvas==0.9.3
 opencv-python-headless==4.10.0.84
