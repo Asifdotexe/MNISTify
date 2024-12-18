@@ -34,6 +34,7 @@ namex==0.0.8
 narwhals==1.18.4
 numpy==2.0.2
 opencv-contrib-python==4.10.0.84
+opencv-python-headless==4.5.3.56
 opt_einsum==3.4.0
 optree==0.13.1
 packaging==24.2
