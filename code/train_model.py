@@ -58,7 +58,6 @@ def build_cnn_model():
         layers.Conv2D(64, (3, 3), activation='relu'),
         layers.Flatten(),
         layers.Dense(128, activation='relu'),
-        layers.Dropout(0.5),  # Regularization to avoid overfitting
         layers.Dense(10, activation='softmax')
     ])
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
