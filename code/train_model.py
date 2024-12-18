@@ -1,9 +1,10 @@
+import numpy as np
+import seaborn as sns
 import tensorflow as tf
+import matplotlib.pyplot as plt
 from tensorflow.keras import layers, models
 from tensorflow.keras.utils import to_categorical
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 sns.set_style('whitegrid')
 plt.rc('figure', autolayout=True)
 plt.rc('axes', labelweight='bold', labelsize='large',
@@ -23,6 +24,24 @@ def load_mnist_data():
     test_labels = to_categorical(test_labels)
     return train_images, train_labels, test_images, test_labels
 
+# Data augmentation
+def augment_data(train_images):
+    """
+    Apply data augmentation to the training dataset using ImageDataGenerator.
+    
+    :param train_images: Training images.
+    :return: Augmented data generator.
+    """
+    datagen = ImageDataGenerator(
+        rotation_range=10,         # Rotate images by up to 10 degrees
+        width_shift_range=0.1,     # Shift the image width by up to 10%
+        height_shift_range=0.1,    # Shift the image height by up to 10%
+        zoom_range=0.1,            # Zoom in/out on the image by up to 10%
+        shear_range=0.1,           # Apply shearing transformations
+        fill_mode='nearest'        # Fill in missing pixels after transformations
+    )
+    datagen.fit(train_images)
+    return datagen
 
 # Build a CNN model for digit recognition
 def build_cnn_model():
@@ -31,18 +50,19 @@ def build_cnn_model():
     
     :return: Compiled CNN model.
     """
-    model = models.Sequential()
-    model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-    model.add(layers.Flatten())
-    model.add(layers.Dense(64, activation='relu'))
-    model.add(layers.Dense(10, activation='softmax'))
+    model = models.Sequential([
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.5),  # Regularization to avoid overfitting
+        layers.Dense(10, activation='softmax')
+    ])
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
-
 
 # Train the CNN model and save it to disk
 def train_and_save_model(model, train_images, train_labels, model_path):
@@ -57,7 +77,6 @@ def train_and_save_model(model, train_images, train_labels, model_path):
     history = model.fit(train_images, train_labels, epochs=5, batch_size=64, validation_split=0.2)
     model.save(model_path)
     return history
-
 
 # Evaluate the trained model on the test dataset
 def evaluate_model(model, test_images: np.ndarray, test_labels: np.ndarray):
@@ -110,7 +129,9 @@ if __name__ == "__main__":
 
     # Build and train the model
     model = build_cnn_model()
-    history = train_and_save_model(model, train_images, train_labels, "../saved_model/mnist_digit_recognizer.keras")
+    history = train_and_save_model(model, train_images, train_labels, "../saved_model/mnist_digit_recognizer_updated.keras")
+    model.save("mnist_digit_recognizer_updated.keras")
+    print("Model saved successfully")
 
     # Plot the training history
     plot_training_history(history, "../saved_model/training_history.png")
