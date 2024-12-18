@@ -5,6 +5,7 @@ pillow==11.0.0
 seaborn==0.13.2
 matplotlib==3.9.2
 streamlit==1.40.2
+tensorflow-cpu
 tensorflow==2.18.0
 opencv-python-headless
 streamlit-drawable-canvas==0.9.3
