@@ -20,7 +20,7 @@ def main():
     )
 
     # Load the trained model
-    model = load_trained_model("saved_model/mnist_digit_recognizer.keras")
+    model = load_trained_model("saved_model/mnist_digit_recognizer_updated.keras")
 
     # File uploader to upload an image
     uploaded_file = st.file_uploader("Upload your image", type=["png", "jpg", "jpeg"])
