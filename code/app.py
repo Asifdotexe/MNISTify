@@ -5,6 +5,9 @@ import plotly.graph_objects as go
 from preprocess import preprocess_image  # Ensure this function correctly processes the image
 from predict import load_trained_model, predict_digit
 
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 def main():
     """
     Main function to run the Streamlit application.
