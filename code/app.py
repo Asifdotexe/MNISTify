@@ -32,6 +32,7 @@ def main():
 
         # Preprocess the image
         preprocessed_image = preprocess_image(image)
+        st.image(preprocessed_image, width=400, caption="Preprocessed Image", use_container_width=True)
 
         # Make a prediction
         predicted_digit, confidence_scores = predict_digit(preprocessed_image, model)
